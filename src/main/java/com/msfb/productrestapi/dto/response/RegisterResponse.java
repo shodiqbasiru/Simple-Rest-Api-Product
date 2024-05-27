@@ -1,4 +1,15 @@
 package com.msfb.productrestapi.dto.response;
 
-public class RegisrerResponse {
+import lombok.*;
+
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class RegisterResponse {
+    private String id;
+    private String name;
+    private String email;
+    private String phoneNumber;
 }

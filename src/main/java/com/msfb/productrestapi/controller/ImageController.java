@@ -1,9 +1,6 @@
 package com.msfb.productrestapi.controller;
 
-import com.enigma.laternak.constant.ApiRoute;
-import com.enigma.laternak.service.ImageProductService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import com.msfb.productrestapi.service.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -15,15 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@Tag(name = "Image Product", description = "API for Image Product")
-public class ImageProductController {
-    private final ImageProductService imageService;
+public class ImageController {
+    private final ImageService imageService;
 
-    @Operation(
-            summary = "Download image product",
-            description = "Download image product"
-    )
-    @GetMapping(path = ApiRoute.IMAGE_PRODUCT_API+"/{imageId}")
+    @GetMapping(path = "/api/products"+"/{imageId}")
     public ResponseEntity<?> downloadImage(@PathVariable String imageId){
         Resource resource=imageService.getById(imageId);
         String headerValue = String.format("attachment; filename=%s", resource.getFilename());

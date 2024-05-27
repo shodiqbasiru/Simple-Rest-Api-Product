@@ -37,5 +37,5 @@ public class Product {
     @OneToOne
     @JsonBackReference
     @JoinColumn(name = "image_id", unique = true)
-    private Image product;
+    private Image image;
 }
