@@ -2,14 +2,19 @@ package com.msfb.productrestapi.service.impl;
 
 import com.msfb.productrestapi.dto.request.ProductRequest;
 import com.msfb.productrestapi.dto.request.UpdateProductRequest;
+import com.msfb.productrestapi.dto.response.ImageResponse;
+import com.msfb.productrestapi.dto.response.ProductResponse;
 import com.msfb.productrestapi.entity.Image;
 import com.msfb.productrestapi.entity.Product;
 import com.msfb.productrestapi.repository.ProductRepository;
 import com.msfb.productrestapi.service.ImageService;
 import com.msfb.productrestapi.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Date;
 import java.util.List;
@@ -33,20 +38,30 @@ public class ProductServiceImpl implements ProductService {
                 .qty(request.getQty())
                 .price(request.getPrice())
                 .image(image)
+                .createdAt(new Date())
                 .build();
         return repository.saveAndFlush(payload);
     }
 
-    @Transactional(readOnly = true)
     @Override
     public Product findById(String id) {
-        return repository.findById(id).orElseThrow(() -> new RuntimeException("product not found"));
+        return repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"product not found"));
     }
 
     @Transactional(readOnly = true)
     @Override
-    public List<Product> findAll() {
-        return repository.findAll();
+    public ProductResponse findProductById(String id) {
+        Product product = findById(id);
+        return getProductResponse(product);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<ProductResponse> findAll(String sortBy, String direction) {
+        Sort sort = Sort.by(Sort.Direction.fromString(direction),sortBy);
+        return repository.findAll(sort).stream()
+                .map(this::getProductResponse)
+                .toList();
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -76,5 +91,20 @@ public class ProductServiceImpl implements ProductService {
     public void delete(String id) {
         Product currentProduct = findById(id);
         repository.delete(currentProduct);
+    }
+
+    private ProductResponse getProductResponse(Product product) {
+        return ProductResponse.builder()
+                .id(product.getId())
+                .skuCode(product.getSkuCode())
+                .productName(product.getProductName())
+                .qty(product.getQty())
+                .price(product.getPrice())
+                .createdAt(product.getCreatedAt())
+                .image(ImageResponse.builder()
+                        .url("/api/products/image/" + product.getImage().getId())
+                        .name(product.getImage().getName())
+                        .build())
+                .build();
     }
 }

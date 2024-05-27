@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.msfb.productrestapi.dto.request.ProductRequest;
 import com.msfb.productrestapi.dto.request.UpdateProductRequest;
 import com.msfb.productrestapi.dto.response.CommonResponse;
+import com.msfb.productrestapi.dto.response.ProductResponse;
 import com.msfb.productrestapi.entity.Product;
 import com.msfb.productrestapi.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -53,9 +54,12 @@ public class ProductController {
     @GetMapping(
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<CommonResponse<List<Product>>> getAll() {
-        List<Product> result = productService.findAll();
-        CommonResponse<List<Product>> response = CommonResponse.<List<Product>>builder()
+    public ResponseEntity<CommonResponse<List<ProductResponse>>> getAll(
+            @RequestParam(name = "sortBy", defaultValue = "createdAt") String sort,
+            @RequestParam(name = "direction", defaultValue = "desc") String direction
+    ) {
+        List<ProductResponse> result = productService.findAll(sort,direction);
+        CommonResponse<List<ProductResponse>> response = CommonResponse.<List<ProductResponse>>builder()
                 .statusCode(HttpStatus.OK.value())
                 .message("Get all data successfully")
                 .data(result)
@@ -67,9 +71,9 @@ public class ProductController {
             path = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<CommonResponse<Product>> findById(@PathVariable String id) {
-        Product result = productService.findById(id);
-        CommonResponse<Product> response = CommonResponse.<Product>builder()
+    public ResponseEntity<CommonResponse<ProductResponse>> findById(@PathVariable String id) {
+        ProductResponse result = productService.findProductById(id);
+        CommonResponse<ProductResponse> response = CommonResponse.<ProductResponse>builder()
                 .statusCode(HttpStatus.OK.value())
                 .message("Get data successfully")
                 .data(result)

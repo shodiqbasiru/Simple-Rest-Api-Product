@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ImageController {
     private final ImageService imageService;
 
-    @GetMapping(path = "/api/products"+"/{imageId}")
+    @GetMapping(path = "/api/products/image"+"/{imageId}")
     public ResponseEntity<?> downloadImage(@PathVariable String imageId){
         Resource resource=imageService.getById(imageId);
         String headerValue = String.format("attachment; filename=%s", resource.getFilename());
