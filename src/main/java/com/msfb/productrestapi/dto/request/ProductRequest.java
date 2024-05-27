@@ -1,7 +1,6 @@
 package com.msfb.productrestapi.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.Column;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
