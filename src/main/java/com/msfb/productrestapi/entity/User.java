@@ -1,4 +1,4 @@
-package entity;
+package com.msfb.productrestapi.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

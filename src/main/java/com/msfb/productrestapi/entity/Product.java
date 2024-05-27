@@ -1,4 +1,4 @@
-package entity;
+package com.msfb.productrestapi.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
