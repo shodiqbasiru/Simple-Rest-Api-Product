@@ -1,15 +1,16 @@
 package com.msfb.productrestapi.service.impl;
 
 import com.msfb.productrestapi.dto.request.LoginRequest;
+import com.msfb.productrestapi.dto.request.LoginPhoneRequest;
 import com.msfb.productrestapi.dto.request.RegisterRequest;
 import com.msfb.productrestapi.dto.response.LoginResponse;
+import com.msfb.productrestapi.dto.response.RegisterResponse;
 import com.msfb.productrestapi.entity.User;
 import com.msfb.productrestapi.repository.UserRepository;
 import com.msfb.productrestapi.service.JwtService;
 import com.msfb.productrestapi.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -30,7 +31,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public User register(RegisterRequest request) {
+    public RegisterResponse register(RegisterRequest request) {
         String hashcode = encoder.encode(request.getPassword());
 
         User payload = User.builder()
@@ -41,32 +42,29 @@ public class UserServiceImpl implements UserService {
                 .isEnable(true)
                 .build();
 
-        return repository.saveAndFlush(payload);
+        User user = repository.saveAndFlush(payload);
+
+        return RegisterResponse.builder()
+                .id(user.getId())
+                .name(user.getName())
+                .email(user.getEmail())
+                .phoneNumber(user.getPhoneNumber())
+                .build();
     }
 
     @Override
     public LoginResponse login(LoginRequest request) {
-        String emailOrPhoneNumber = request.getEmailOrPhone();
-        User user;
 
-        if (emailOrPhoneNumber.contains("@")) {
-            user = repository.findByEmail(emailOrPhoneNumber);
-        } else {
-            user = repository.findByPhoneNumber(emailOrPhoneNumber);
-        }
-
-        if (user == null || !encoder.matches(request.getPassword(), user.getPassword())) {
-            throw new BadCredentialsException("Invalid email/phone number or password");
-        }
         Authentication authentication = new UsernamePasswordAuthenticationToken(
-                user,
+                request.getEmailOrPhone(),
                 request.getPassword()
         );
+
         Authentication authenticate = authenticationManager.authenticate(authentication);
         SecurityContextHolder.getContext().setAuthentication(authenticate);
 
         User principal = (User) authenticate.getPrincipal();
-        String token = jwtService.generateToken(user);
+        String token = jwtService.generateToken(principal);
 
         return LoginResponse.builder()
                 .email(principal.getEmail())
