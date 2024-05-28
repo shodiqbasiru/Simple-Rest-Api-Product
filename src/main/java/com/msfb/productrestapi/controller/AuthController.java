@@ -5,7 +5,6 @@ import com.msfb.productrestapi.dto.request.RegisterRequest;
 import com.msfb.productrestapi.dto.response.CommonResponse;
 import com.msfb.productrestapi.dto.response.LoginResponse;
 import com.msfb.productrestapi.dto.response.RegisterResponse;
-import com.msfb.productrestapi.dto.response.UserResponse;
 import com.msfb.productrestapi.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -49,20 +48,6 @@ public class AuthController {
                 .data(user)
                 .build();
         return ResponseEntity.ok(response);
-    }
-
-    @GetMapping(
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
-    public ResponseEntity<CommonResponse<UserResponse>> findByEmail (@RequestParam String email) {
-        UserResponse user = userService.findByEmail(email);
-        return ResponseEntity.ok(
-                CommonResponse.<UserResponse>builder()
-                        .statusCode(HttpStatus.OK.value())
-                        .message("User found")
-                        .data(user)
-                        .build()
-        );
     }
 
     @GetMapping(path = "/validate-token")
