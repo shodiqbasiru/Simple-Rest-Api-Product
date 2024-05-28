@@ -6,6 +6,7 @@ import com.msfb.productrestapi.dto.response.CommonResponse;
 import com.msfb.productrestapi.dto.response.LoginResponse;
 import com.msfb.productrestapi.dto.response.RegisterResponse;
 import com.msfb.productrestapi.service.UserService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/auth")
+@Tag(name = "User Api", description = "user API")
 public class AuthController {
     private final UserService userService;
 

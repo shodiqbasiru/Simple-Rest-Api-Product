@@ -31,6 +31,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers(HttpMethod.GET,"/api/products/image/**").permitAll()
                         .requestMatchers(HttpMethod.GET,"/api/products").permitAll()
+                        .requestMatchers("/api-docs/**","/swagger-ui/**").permitAll()
                         .requestMatchers("/api/auth/validate-token").authenticated()
                         .anyRequest().authenticated())
                 .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)

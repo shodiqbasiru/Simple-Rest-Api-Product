@@ -1,6 +1,7 @@
 package com.msfb.productrestapi.controller;
 
 import com.msfb.productrestapi.service.ImageService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
+@Tag(name = "Image Api", description = "Image API")
 public class ImageController {
     private final ImageService imageService;
 

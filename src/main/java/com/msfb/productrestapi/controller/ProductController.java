@@ -8,6 +8,9 @@ import com.msfb.productrestapi.dto.response.CommonResponse;
 import com.msfb.productrestapi.dto.response.ProductResponse;
 import com.msfb.productrestapi.entity.Product;
 import com.msfb.productrestapi.service.ProductService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -20,11 +23,17 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/products")
+@Tag(name = "Product Api", description = "Product API")
 public class ProductController {
 
     private final ProductService productService;
     private final ObjectMapper objectMapper;
 
+    @Operation(
+            summary = "Create new product",
+            description = "Create new product"
+    )
+    @SecurityRequirement(name = "Authorization")
     @PostMapping(
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
@@ -51,6 +60,11 @@ public class ProductController {
         }
     }
 
+    @Operation(
+            summary = "Get all product",
+            description = "Get all product"
+    )
+    @SecurityRequirement(name = "Authorization")
     @GetMapping(
             produces = MediaType.APPLICATION_JSON_VALUE
     )
@@ -67,6 +81,11 @@ public class ProductController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @Operation(
+            summary = "Get product by id",
+            description = "Get product by id"
+    )
+    @SecurityRequirement(name = "Authorization")
     @GetMapping(
             path = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE
@@ -81,6 +100,11 @@ public class ProductController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @Operation(
+            summary = "Update product",
+            description = "Update product"
+    )
+    @SecurityRequirement(name = "Authorization")
     @PutMapping(
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
@@ -107,6 +131,11 @@ public class ProductController {
         }
     }
 
+    @Operation(
+            summary = "Delete product",
+            description = "Delete product"
+    )
+    @SecurityRequirement(name = "Authorization")
     @DeleteMapping(
             path = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE
