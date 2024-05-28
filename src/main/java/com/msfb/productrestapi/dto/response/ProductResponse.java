@@ -1,7 +1,6 @@
 package com.msfb.productrestapi.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;

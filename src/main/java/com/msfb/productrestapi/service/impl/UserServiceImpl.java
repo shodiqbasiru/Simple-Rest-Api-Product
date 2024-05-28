@@ -4,6 +4,7 @@ import com.msfb.productrestapi.dto.request.LoginRequest;
 import com.msfb.productrestapi.dto.request.RegisterRequest;
 import com.msfb.productrestapi.dto.response.LoginResponse;
 import com.msfb.productrestapi.dto.response.RegisterResponse;
+import com.msfb.productrestapi.dto.response.UserResponse;
 import com.msfb.productrestapi.entity.User;
 import com.msfb.productrestapi.repository.UserRepository;
 import com.msfb.productrestapi.service.JwtService;
@@ -68,6 +69,17 @@ public class UserServiceImpl implements UserService {
         return LoginResponse.builder()
                 .email(principal.getEmail())
                 .token(token)
+                .build();
+    }
+
+    @Override
+    public UserResponse findByEmail(String email) {
+        User user = repository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+        return UserResponse.builder()
+                .id(user.getId())
+                .name(user.getName())
+                .email(user.getEmail())
+                .phoneNumber(user.getPhoneNumber())
                 .build();
     }
 
