@@ -29,7 +29,7 @@ public class ProductServiceImpl implements ProductService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public Product create(ProductRequest request) {
-        if (request.getImage().isEmpty()) throw new RuntimeException("image is required");
+        if (request.getImage().isEmpty()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "image is required");
 
         Image image = imageService.create(request.getImage());
         Product payload = Product.builder()

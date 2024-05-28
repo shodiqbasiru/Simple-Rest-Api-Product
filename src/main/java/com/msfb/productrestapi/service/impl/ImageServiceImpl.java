@@ -44,7 +44,7 @@ public class ImageServiceImpl implements ImageService {
     public Image create(MultipartFile multipartFile) {
         try {
             if (!List.of("image/jpeg", "image/jpg", "image/svg", "image/png").contains(multipartFile.getContentType()))
-                throw new Exception("Invalid image content type");
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Only image file allowed");
             String originalFilename = System.currentTimeMillis() + "_" + multipartFile.getOriginalFilename();
             Path filePath = directoryPath.resolve(originalFilename);
             Files.copy(multipartFile.getInputStream(), filePath);

@@ -1,4 +1,4 @@
-package com.msfb.productrestapi.service.impl;
+package com.msfb.productrestapi.security;
 
 import com.msfb.productrestapi.entity.JwtClaims;
 import com.msfb.productrestapi.entity.User;
