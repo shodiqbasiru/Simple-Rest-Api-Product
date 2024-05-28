@@ -10,10 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,7 +26,7 @@ public class AuthController {
     public ResponseEntity<CommonResponse<?>> register(@RequestBody RegisterRequest request) {
         RegisterResponse user = userService.register(request);
         CommonResponse<RegisterResponse> response = CommonResponse.<RegisterResponse>builder()
-                .statusCode(HttpStatus.OK.value())
+                .statusCode(HttpStatus.CREATED.value())
                 .message("Registered user successfully")
                 .data(user)
                 .build();
@@ -50,4 +47,25 @@ public class AuthController {
                 .build();
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping(path = "/validate-token")
+    public ResponseEntity<CommonResponse<?>> validateToken() {
+        boolean isValid = userService.validateToken();
+        if (isValid) {
+            return ResponseEntity.ok(
+                    CommonResponse.builder()
+                            .statusCode(HttpStatus.OK.value())
+                            .message("Token is valid")
+                            .build()
+            );
+        } else {
+            return ResponseEntity.ok(
+                    CommonResponse.builder()
+                            .statusCode(HttpStatus.UNAUTHORIZED.value())
+                            .message("Token is invalid")
+                            .build()
+            );
+        }
+    }
+
 }

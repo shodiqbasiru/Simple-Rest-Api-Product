@@ -30,6 +30,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(req -> req.dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers(HttpMethod.GET,"/api/products/image/**").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/api/products").permitAll()
+                        .requestMatchers("/api/auth/validate-token").authenticated()
                         .anyRequest().authenticated())
                 .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

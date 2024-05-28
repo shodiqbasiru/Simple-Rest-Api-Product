@@ -8,4 +8,5 @@ import com.msfb.productrestapi.dto.response.RegisterResponse;
 public interface UserService {
     RegisterResponse register(RegisterRequest request);
     LoginResponse login(LoginRequest request);
+    boolean validateToken();
 }

@@ -4,8 +4,6 @@ import com.msfb.productrestapi.entity.Image;
 import com.msfb.productrestapi.repository.ImageRepository;
 import com.msfb.productrestapi.service.ImageService;
 import jakarta.annotation.PostConstruct;
-import lombok.RequiredArgsConstructor;
-import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;

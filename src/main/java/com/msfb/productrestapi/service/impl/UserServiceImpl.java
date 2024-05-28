@@ -70,4 +70,13 @@ public class UserServiceImpl implements UserService {
                 .token(token)
                 .build();
     }
+
+    @Override
+    public boolean validateToken() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = repository.findByEmail(authentication.getPrincipal().toString()).orElse(
+                repository.findByPhoneNumber(authentication.getPrincipal().toString()).orElse(null)
+        );
+        return user != null;
+    }
 }
